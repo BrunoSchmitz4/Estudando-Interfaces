@@ -8,6 +8,7 @@ using InterAppOne.Services;
 using InterAppOne.Enums;
 using InterAppOne.Devices;
 
+
 namespace InterAppOne
 {
       
@@ -15,14 +16,37 @@ namespace InterAppOne
     {
         static void Main(string[] args)
         {
-            // Herança múltipla e o problema do diamante
-            // Quando ocorre tal herança, pode acontecer
-            // o problema do diamante.
-            // Ele é uma ambiguidade causada por existir o mesmo método em mais de uma superclasse.
-            // A herança múltipla não é permitida na maioria das linguagens
-            DiamondProblem();
+            IComparable();
         }
 
+        static void IComparable()
+        {
+            string path = @"C:\Estágio 2 - CSharp\in.txt";
+            try
+            {
+                using(StreamReader sr = File.OpenText(path))
+                {
+                    List<Employee> list = new List<Employee>();
+                    while (!sr.EndOfStream)
+                    {
+                        list.Add(new Employee(sr.ReadLine()));
+                    }
+                    list.Sort();
+                    foreach (Employee emp in list)
+                    {
+                        Console.WriteLine(emp);
+                    }
+                }
+            }catch (IOException ex)
+            {
+                Console.WriteLine("An error occurred");
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+
+            }
+        }
         static void DiamondProblem()
         {
             Printer p = new Printer() { SerialNumber = 1080 };
