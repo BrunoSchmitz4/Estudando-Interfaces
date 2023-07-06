@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace InterAppOne.Services
 {
-    internal class BrazilTaxService
+    // Difrente do que foi visto anteriormente,
+    // Isso se chama realização de interface, e não herança
+    internal class BrazilTaxService : ITaxService
     {
         public double Tax(double amount)
         {

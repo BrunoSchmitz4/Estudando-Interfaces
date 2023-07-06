@@ -13,12 +13,19 @@ namespace InterAppOne.Services
         public double PricePerDay { get; private set; }
 
         // dependecia
-        private BrazilTaxService _BrazilTaxService = new BrazilTaxService(); 
+        private ITaxService _taxService; 
 
-        public RentalService(double pricePerHour, double pricePerDay)
+        public RentalService(double pricePerHour, double pricePerDay, ITaxService taxService)
         {
             PricePerHour = pricePerHour;
             PricePerDay = pricePerDay;
+
+            // O que foi feito abaixo é chamado de
+            // inversão de controle por meio de injeção de dependências. 
+            _taxService = taxService;
+
+            // Ou seja, ela não mais instancia a dependência dela
+            // recebendo o objeto instanciado e atribuir.
         }
 
         public void ProcessInvoice(CarRental carRental)
@@ -37,7 +44,7 @@ namespace InterAppOne.Services
                 basicPayment = PricePerDay * Math.Ceiling(duration.TotalDays);
             }
 
-            double tax = _BrazilTaxService.Tax(basicPayment);
+            double tax = _taxService.Tax(basicPayment);
 
             carRental.Invoice = new Invoice(basicPayment, tax);
         }
