@@ -6,16 +6,37 @@ using System.IO;
 using System.Transactions;
 using InterAppOne.Services;
 using InterAppOne.Enums;
+using InterAppOne.Devices;
 
 namespace InterAppOne
 {
+      
     class Program
     {
         static void Main(string[] args)
         {
-            Shape();
+            // Herança múltipla e o problema do diamante
+            // Quando ocorre tal herança, pode acontecer
+            // o problema do diamante.
+            // Ele é uma ambiguidade causada por existir o mesmo método em mais de uma superclasse.
+            // A herança múltipla não é permitida na maioria das linguagens
+            DiamondProblem();
         }
 
+        static void DiamondProblem()
+        {
+            Printer p = new Printer() { SerialNumber = 1080 };
+            p.ProcessDoc("My letter");
+            p.Print("My letter");
+
+            Scanner s = new Scanner() { SerialNumber = 2003 };
+            s.ProcessDoc("My Email");
+            Console.WriteLine(s.Scan());
+            ComboDevide c = new ComboDevide() { SerialNumber = 3921 };
+            c.ProcessDoc("My dissertation");
+            c.Print("My dissertation");
+            Console.WriteLine(c.Scan());
+        }
         static void Vehicles()
         {
             Console.WriteLine("Dados do Veículo: ");
