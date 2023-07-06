@@ -12,6 +12,9 @@ namespace InterAppOne.Services
         public double PricePerHour { get; private set; }
         public double PricePerDay { get; private set; }
 
+        // dependecia
+        private BrazilTaxService _BrazilTaxService = new BrazilTaxService(); 
+
         public RentalService(double pricePerHour, double pricePerDay)
         {
             PricePerHour = pricePerHour;
@@ -20,7 +23,23 @@ namespace InterAppOne.Services
 
         public void ProcessInvoice(CarRental carRental)
         {
+            TimeSpan duration = carRental.Finish.Subtract(carRental.Start);
 
+            double basicPayment = 0.0;
+            if(duration.TotalHours <= 12)
+            {
+                // A superclasse Math, tem um método chamado Ceiling,
+                // que arredonda valores pra cima
+                basicPayment = PricePerHour * Math.Ceiling(duration.TotalHours);
+            }
+            else
+            {
+                basicPayment = PricePerDay * Math.Ceiling(duration.TotalDays);
+            }
+
+            double tax = _BrazilTaxService.Tax(basicPayment);
+
+            carRental.Invoice = new Invoice(basicPayment, tax);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Transactions;
+using InterAppOne.Services;
 
 namespace InterAppOne
 {
@@ -23,8 +24,22 @@ namespace InterAppOne
             DateTime start = DateTime.ParseExact(Console.ReadLine(), "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
             Console.Write("Data e Hora de Saída (dd/MM/yyyy hh:mm): ");
             DateTime finish = DateTime.ParseExact(Console.ReadLine(), "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
-        
+
+            Console.Write("Insira o preço por hora: ");
+            double hour = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);Console.WriteLine("Insira o preço por hora: ");
+            
+            Console.Write("Insira o preço por dia: ");
+            double day = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
+
+
             CarRental carRental = new CarRental(start, finish, new Vehicle(model));
+
+            RentalService rentalService = new RentalService(hour, day);
+
+            rentalService.ProcessInvoice(carRental);
+
+            Console.Write("INVOICE: ");
+            Console.WriteLine(carRental.Invoice);
         }
         
         static void InitGeometricsF()
